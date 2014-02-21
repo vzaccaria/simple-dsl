@@ -1,6 +1,6 @@
 
 all: proglet.hs
-	ghc --make -XTemplateHaskell $< -o proglet
+	ghc --make -XTemplateHaskell -XTypeSynonymInstances -XFlexibleInstances $< -o proglet
 	./proglet
 
 clean: 
