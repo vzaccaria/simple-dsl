@@ -7,3 +7,5 @@ proglet
 proglet.hi
 proglet.o
 opencl/o0
+Filt.hi
+Filt.o
