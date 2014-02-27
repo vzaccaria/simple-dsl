@@ -10,3 +10,5 @@ opencl/o0
 Filt.hi
 Filt.o
 B.hs
+SimplifyExp.hi
+SimplifyExp.o

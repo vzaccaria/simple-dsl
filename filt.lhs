@@ -25,18 +25,9 @@ Dot product:
 > 
 > 
 > flt0 :: [Rational] -> ( Q Exp -> Q Exp )
-> flt0 c = \x -> dotv (reverse c) x (length c) 0
+> flt0 c = \x -> dotv (c) x (length c) 0
 > 
 >
-> flt1 :: [Rational] -> [Rational] -> (Q Exp -> Q Exp)
-> flt1 c1 c2 = \x ->
->					let e1 = (flt0 c1)(x)
->					    e2 = (flt0 c2)(e1)
->					    in e2
 
-
-
-flt::[Rational] -> Q Exp
-flt c = [| \x -> $(dotv (reverse c) [| x |] (length c) 0) |]
 
 
