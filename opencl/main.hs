@@ -10,7 +10,7 @@ import Text.PrettyPrint.Mainland
 
 
 programSource :: String
-programSource = show  [cunit|
+programSource = show $ ppr [cunit|
 __kernel void duparray(__global float *in, __global float *out)
 {
   int id = get_global_id(0);
@@ -22,13 +22,13 @@ main :: IO ()
 main = do
 
   putStrLn "Compiling:"
-  putStrLn programSource
+  --putStrLn programSource
 
   -- Initialize OpenCL
   (platform:_) <- clGetPlatformIDs
-  (dev:_) <- clGetDeviceIDs platform CL_DEVICE_TYPE_ALL
-  context <- clCreateContext [CL_CONTEXT_PLATFORM platform] [dev] print
-  q <- clCreateCommandQueue context dev []
+  (dev:_)      <- clGetDeviceIDs platform CL_DEVICE_TYPE_ALL
+  context      <- clCreateContext [CL_CONTEXT_PLATFORM platform] [dev] print
+  q            <- clCreateCommandQueue context dev []
   
   -- Initialize Kernel
   program <- clCreateProgramWithSource context programSource

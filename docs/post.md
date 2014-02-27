@@ -19,8 +19,6 @@ Then you should install `template-haskell` with Cabal:
 	cabal install template-haskell
 
 
-
-
 Initial example
 ----------------
 
@@ -31,14 +29,14 @@ Let's define a module with a function that computes the symbolic power of an exp
 
 Let's call our module `A`. This module will import Template Haskell and not much else: 
 
-> module A where
-> 
-> import Language.Haskell.TH
-> import Language.Haskell.TH.Syntax
+	module A where
+	 
+	import Language.Haskell.TH
+	import Language.Haskell.TH.Syntax
 
 Our function `expand_power` receives an `int`, a **staged expression** `Q Exp` and returns another staged expression `Q Exp`.
 
-> expand_power :: Int -> Q Exp -> Q Exp
+	expand_power :: Int -> Q Exp -> Q Exp
 
 A staged expression is just a representation of a portion of code. It is like an *abstract syntax tree*
 that represents a computation to be performed at run-time. The above type means that the function
@@ -46,17 +44,17 @@ receives a representation of a symbol and returns an expression of that symbol, 
 
 The function itself receives  two parameters (the exponent and the expression to be exponentiated):
 
-> expand_power n x =
+	expand_power n x =
 
 When `n` is 0, the function returns the AST for the literal `1`, by using Template Haskell quoting:
 
->     if n==0
->         then [| 1 |]
+	if n==0
+    	then [| 1 |]
 
 The above should be interpreted as: *if `n` is 0, then return an AST that when evaluated at run-time 
 is 1.* If `n` is not 0, then we must build, with a (compile-time) recursion, the expression tree:
 
->         else [| $x * $(expand_power (n-1) x ) |]
+        else [| $x * $(expand_power (n-1) x ) |]
 
 First of all, we are building an AST for a multiplication so the value returned is a quoted value. The dollar sign 
 is the *splice* operator; `$x` allows to take the AST passed as parameter `x` and splice it into the bigger AST as the first operand 
@@ -66,8 +64,8 @@ recursively `expand_power` to provide the representation of the sub-expression.
 
 We can also define a function that returns a representation of an Haskell lambda:
 
-> mk_power :: Int -> Q Exp
-> mk_power n = [| \x -> $(expand_power n [| x |]) |]
+	mk_power :: Int -> Q Exp
+	mk_power n = [| \x -> $(expand_power n [| x |]) |]
 
 The second quoted value `[| x |]` means that the AST to be passed to the `expand_power` function
 should be the formal parameter `x` of the closure we are building. Scoping works just as we expect.
@@ -124,18 +122,4 @@ Conclusions
 -----------
 
 Template Haskell opens a whole new world for the creation of embedded DSLs. We can also write optimization passes that work on generated code. In this example, we could have optimized `(x_0 GHC.Num.* 1)` to `x_0` but much more complex DSLs could apply domain specific optimizations.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
