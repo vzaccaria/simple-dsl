@@ -12,3 +12,5 @@ Filt.o
 B.hs
 SimplifyExp.hi
 SimplifyExp.o
+.last-running-container
+.latest-image
