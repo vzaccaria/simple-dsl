@@ -12,4 +12,4 @@ import A
 printCode :: Q Exp -> IO ()
 printCode ast = runQ ast >>= putStrLn . pprint
 
-main = printCode(A.mk_power 3)
+main = printCode [| \x -> $(A.expand_power_anf2 4 [| x + x |]) |]
