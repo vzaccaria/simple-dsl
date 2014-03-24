@@ -39,25 +39,25 @@ simplify eq = do
 
 -- EXAMPLE PIPE
 
-myPipe:: ExpQ -> ExpQ 
-myPipe = \x -> Filt.flt0 [1, 2] $ Filt.flt0 [3, 4] x 
+--myPipe:: ExpQ -> ExpQ 
+--myPipe = \x -> Filt.flt0 [1, 2] $ Filt.flt0 [3, 4] x 
 
---filtA:: ExpQ -> ExpQ 
---filtA x = Filt.flt0 [1, 2] x
+filtA:: ExpQ -> ExpQ 
+filtA x = Filt.flt0 [1, 0, 1, 3, 8] x
 
---filtB:: ExpQ -> ExpQ 
---filtB x = Filt.flt0 [3, 4] x
+filtB:: ExpQ -> ExpQ 
+filtB x = Filt.flt0 [2, -1, 0, 7, 4] x
 
---filtC:: ExpQ -> ExpQ 
---filtC x = Filt.flt0 [8, 9] x
+filtC:: ExpQ -> ExpQ 
+filtC x = Filt.flt0 [2, -1, 0, 7, 4] x
 
---thePipe = \x -> filtA $ filtB $ filtC x
+thePipe = \x -> filtA $ filtB $ filtC x
 
---optPipe::ExpQ
---optPipe = [| \x -> $(simplify $ myPipe [| x |]) |]
+optPipe::ExpQ
+optPipe = [| \x -> $(simplify $ thePipe [| x |]) |]
 
---normPipe:: ExpQ 
---normPipe = [| \x -> $(myPipe [| x |]) |]
+normPipe:: ExpQ 
+normPipe = [| \x -> $(thePipe [| x |]) |]
 
 
 
