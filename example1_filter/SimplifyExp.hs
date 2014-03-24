@@ -44,7 +44,24 @@ isTimes op
 	| op == (VarE '(N.*)) = True 
 	| otherwise 		  = False
 
+
+isNum :: Exp -> Bool
+isNum ((LitE (RationalL (a)))) = True 
+isNum ((LitE (IntegerL (a)))) = True
+isNum _ = False 
+
+getNum :: Exp -> Rational 
+getNum ((LitE (RationalL (a)))) = toRational a
+getNum ((LitE (IntegerL (a)))) = toRational a
+getNum _ = 0
+
+
 -- C O N S T A N T   P R O P A G A T I O N
+
+symNum :: Rational -> Exp
+symNum x = (LitE (RationalL x))
+
+
 
 constProp :: Exp -> Exp 
 
@@ -54,6 +71,8 @@ constProp (InfixE (Just e1) op (Just e2))
 	| ((justZero e1) || (justZero e2)) && (isTimes op) = zero
 	| ((justOne e1)) && (isTimes op)                   = e2
 	| ((justOne e2)) && (isTimes op)                   = e1
+	| (isTimes op) && (isNum e1) && (isNum e2) 		   = (symNum ((getNum e1) * (getNum e2)))
+	| (isPlus op) && (isNum e1) && (isNum e2) 		   = (symNum ((getNum e1) + (getNum e2)))
 	| otherwise                      = (InfixE (Just (constProp e1)) op (Just (constProp e2)))
 
 constProp e = e
