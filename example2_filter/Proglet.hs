@@ -10,12 +10,6 @@ import Utils (printCode, printAST)
 import TopLevel (thePipe, simplify)
 import TopLevel (filtA, filtB, filtC, optPipe, normPipe)
 
---executeThis :: Fractional a => [a] -> a
---executeThis v = $(normPipe [| v |])
-
-unboxedNormPipe:: [Rational] -> Rational
-unboxedNormPipe = \x -> $(simplify $ thePipe [| x |])
-
 ffA:: [Rational] -> Rational 
 ffA = \x -> $(filtA [| x |])
 
