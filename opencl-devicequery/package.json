@@ -1,0 +1,43 @@
+{
+  "name": "opencl-device-query",
+  "version": "0.0.2",
+  "description": "opencl device query for dummies - sparklines for terminal yay!",
+  "main": "index.js",
+  "bin": {
+    "opencl-device-query": "./dq.js"
+  },
+  "dependencies": {
+    "express": "~3.1.0",
+    "group-by": "~0.0.1",
+    "moment": "~1.7.2",
+    "optimist": "~0.3.5",
+    "stringsim": "~0.0.1",
+    "underscore": "~1.4.3",
+    "underscore.string": "~2.3.1",
+    "ansi-color": "*",
+    "ansi-color-table": "*",
+    "shelljs": "*",
+    "webcl-nodep": "^0.6.1-2",
+    "ansidown": "0.0.1",
+    "chalk": "^0.4.0",
+    "bytes": "^0.3.0"
+  },
+  "contributors": [
+    {
+      "name": "Vittorio Zaccaria",
+      "email": "vittorio.zaccaria@gmail.com"
+    }
+  ],
+  "homepage": "http://www.vittoriozaccaria.net",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vzaccaria"
+  },
+  "author": "Vittorio Zaccaria",
+  "license": "MIT",
+  "engines": {
+    "node": "0.10.13",
+    "npm": "1.1.62"
+  }
+}
