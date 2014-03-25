@@ -74,7 +74,16 @@ nv-arch-cores = {
     0x13: 8 
     0x20: 32 
     0x21: 48 
+    0x30: 192
+    0x35: 192
+    0x50: 128
 }
+
+nv-min-cores = 8
+nv-max-cores = 192
+
+nv-min-sm = 1
+nv-max-sm = 30
 
 extensions = (dev) ->
     (k dev, \DEVICE_EXTENSIONS) / ' '
@@ -133,11 +142,6 @@ for p in platforms
 
 prs = require('ansidown')
 
-x = (s) -> 
-    console.log prs(s).toString()
-
-md = (s) ->
-    prs(s).toString()
 
 chalk = require('chalk');
 
@@ -149,7 +153,7 @@ spark-line = (min, max, med, unit, size, text, value) -->
     value-perc  = perc value
     med-perc    = perc med
 
-    text-size   = Math.floor(size * 0.3) + 1
+    text-size   = Math.floor(size * 0.2) + 1
     bar-size-um = Math.floor(size * 0.6 * med-perc)
     bar-size-am = Math.floor(size * 0.6 * (1 - med-perc ))
 
@@ -171,10 +175,7 @@ spark-line = (min, max, med, unit, size, text, value) -->
     lb          = _.rpad(lb-text, bar-size-um)
     ub          = _.rpad(ub-text, bar-size-am)
 
-    ttval       = _.lpad(_(_.number-format(value)+unit).prune(val-size), val-size)
-
-
-
+    ttval       = _.rpad(_(_.number-format(value)+unit).prune(val-size), val-size)
 
 
     brightCyan= (s) ->
@@ -192,12 +193,64 @@ spark-line = (min, max, med, unit, size, text, value) -->
 
 
 
+indent          = 0
+indent-size     = 9
+paragraph-title = ''
+
+bop = (s) ->
+    indent := indent-size
+    paragraph-title := _.lpad(_(s).prune(indent-size), indent-size)
+
+eop = ->
+    indent = 0
 
 
+o = (s) ->
+    if indent>0
+        console.log paragraph-title, s
+        paragraph-title := _.lpad(_('').prune(indent-size), indent-size)
+    else 
+        console.log s
 
-x '# OpenCL device query - (c) 2014 - Vittorio Zaccaria' 
+O = (s) ->
+    o(s)
+    console.log ""
+
+
+md = (s) ->
+    prs(s).toString()
+
+bytes = require('bytes')
+
+o md '# OpenCL device query - (c) 2014 - Vittorio Zaccaria' 
 for p in info 
-    x "**platform information**: #{p.name}, **platform version**: #{p.version}"
-    console.log spark-line(0, 10, 7, 'Kb', 35, "cache", 8) 
+    o md "**platform information**: #{p.name}, **platform version**: #{p.version}"
+    for d in p.devices
+
+        compute-units = spark-line(1 , nv-max-sm , 15  , ''   , 35 , "cunits"   , d.n-compute-units)
+        wgsize        = spark-line(1 , 2048      , 512 , ''   , 35 , "wg-size"  , d.work-group-size)
+        lmsize        = spark-line(1 , 64        , 32  , 'KB' , 35 , "localmem" , (d.local-mem-size/bytes('1kb')))
+        cmsize        = spark-line(1 , 64        , 32  , 'KB' , 35 , "constmem" , (d.const-mem-size/bytes('1kb')))
+        csize         = spark-line(1 , 128       , 32  , 'KB' , 35 , "cache"    , (d.cache-size-kb))
+        # cmsize      = spark-line(1 , 64        , 32  , ''   , 35 , "KB"       , d.const-mem-size)
+
+        bop "#{d.type}:"
+
+        o  md "**device-name**: #{d.name}, **frequency**: #{d.frequency}"
+        o  md "--"
+
+
+        if not d.nv?
+            d.nv = { cores: 1 }
+
+        if d.nv?
+            corenum = spark-line(1           , nv-max-cores             , 15    , '' , 35 , "cores/cu" , (d.nv.cores))
+            totcore = spark-line(1*nv-min-sm , nv-max-cores * nv-max-sm , 1000 , '' , 35 , "cores"    , (d.nv.cores * d.n-compute-units))
+            O corenum + totcore            
+
+        O  compute-units + wgsize 
+        O  lmsize + cmsize
+        O  csize + md("read/write: #{d.cache-type}") 
+        eop
 
 
