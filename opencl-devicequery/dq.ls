@@ -179,10 +179,7 @@ spark-line = (min, max, med, unit, size, text, value) -->
 
 
     brightCyan= (s) ->
-        chalk.bgCyan.bold(s)
-
-    darkCyan= (s) ->
-        chalk.bgCyan(s)
+        chalk.black.bgCyan.bold(s)
 
     darkGray = (s) ->
         chalk.inverse.bold(s)

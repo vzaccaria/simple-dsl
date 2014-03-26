@@ -38,12 +38,10 @@ isPlus op
 	| op == (VarE '(N.+)) = True 
 	| otherwise 		  = False
 
-
 isTimes:: Exp -> Bool 
 isTimes op 
 	| op == (VarE '(N.*)) = True 
 	| otherwise 		  = False
-
 
 isNum :: Exp -> Bool
 isNum ((LitE (RationalL (a)))) = True 

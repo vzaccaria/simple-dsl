@@ -59,6 +59,9 @@ optPipe = [| \x -> $(simplify $ thePipe [| x |]) |]
 normPipe:: ExpQ 
 normPipe = [| \x -> $(thePipe [| x |]) |]
 
+firstOpenCLPipe::ExpQ 
+firstOpenCLPipe = [| \x -> $(simplify $ Filt.flt0 [1, 2] $ Filt.flt0 [1, 2] [| x |]) |]
+
 
 
 
