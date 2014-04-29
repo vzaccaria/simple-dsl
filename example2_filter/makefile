@@ -19,5 +19,4 @@ opencl: openclBackEnd.hs $(DEPS)
 
 clean: 
 	rm -f *.o *.hi 
-	rm -rf dist o0
-	rm proglet test opencl
+	rm -f proglet test opencl
