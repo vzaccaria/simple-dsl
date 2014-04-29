@@ -26,7 +26,7 @@ import Utils (printCode, printAST, isDelay, isTimes, isPlus)
 
 programSource :: Integer -> String
 programSource n = show $ ppr [cunit|
-__kernel void duparray(__global float *in, __local float *out)
+__kernel void duparray(__global float *in, __global float *out)
 {
   int id = get_global_id(0);
   out[id] = $(n) * in[id];
@@ -35,7 +35,7 @@ __kernel void duparray(__global float *in, __local float *out)
 
 kernelSource name sigin sigout exp =  [cunit| 
 
-__kernel void $id:name (__global float *$id:(sigin), __local float *$id:(sigout))
+__kernel void $id:name (__global float *$id:(sigin), __global float *$id:(sigout))
 {
   int t = get_global_id(0);
   $id:(sigout)[t] = $exp;
