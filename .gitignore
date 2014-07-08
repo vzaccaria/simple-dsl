@@ -107,3 +107,11 @@ SimplifyExp.o
 *.hi
 
 *.o
+
+example4_polynomials/main/Main.jsmod
+
+example4_polynomials/testSymbolicPoly
+
+example4_polynomials/testSymbolicPoly.js
+
+example4_polynomials/testSymbolicPoly.js.clo

@@ -13,10 +13,10 @@ type Polynomial      = MOP.T NP.Float
 type PolynomialRatio = NR.T (Polynomial)
 
 x::Polynomial -- (x-1)
-x = (MOP.fromCoeffs [1,0,1 ::NP.Float])
+x = (MOP.fromCoeffs [5,3,5 ::NP.Float])
 
 y::Polynomial -- (x^2-1)
-y = (MOP.fromCoeffs[1,1 ::NP.Float])
+y = (MOP.fromCoeffs[2,1 ::NP.Float])
 
 gcdz::[Polynomial] -> Polynomial
 gcdz = fst . PID.extendedGCDMulti 
