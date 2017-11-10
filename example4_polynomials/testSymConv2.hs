@@ -32,6 +32,7 @@ import qualified Algebra.PrincipalIdealDomain as PID
 import Numeric as N
 import qualified Data.List as DL 
 import Data.Maybe
+import qualified MathObj.Polynomial.Core as PC
 import qualified Prelude as P
 
 type Matrix = M.T NP.Float
@@ -171,8 +172,15 @@ t3 = MOP.fromCoeffs [1, 0, 1::NP.Float]
 convo::MatrixPolynomial 
 convo = (transfer 3) * (signal 3)
 
+showP::FloatPolynomial -> String
+showP = ($"") . MOP.showsExpressionPrec 0 "p"
+
+m1 = M.fromList 2 2 [ 1, 2, 3, 4 ]
+m2 = M.fromList 2 2 [ 1, 1, 1, 1 ]
+
 main = do
-	putStrLn $ toString $ (convo)
+	--putStrLn $ showP $ fst $ snd $ PID.extendedGCD t3 (t2 * t1)
+	putStrLn $ show $ PC.tensorProduct [ 1, 1, 1::NP.Float ] [ 1, 1 ::NP.Float ]
 
 
 	--putStrLn $ show $  t
